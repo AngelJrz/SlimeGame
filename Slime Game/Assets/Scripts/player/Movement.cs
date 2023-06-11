@@ -4,11 +4,13 @@ using UnityEngine;
 
 public class Movement : MonoBehaviour
 {
-    [SerializeField] private float salto = 0;
+    [SerializeField] private float salto = 14;
+    [SerializeField] private float peso = 8;
 
     private Rigidbody2D player;
     private SpriteRenderer spritePlayer;
     private float directionX;
+    private bool puedeSaltarNuevamente;
 
 
     void Start()
@@ -26,11 +28,15 @@ public class Movement : MonoBehaviour
     private void PlayerAction()
     {
         directionX = Input.GetAxisRaw("Horizontal"); 
-        player.velocity = new Vector2(directionX * 7f, player.velocity.y);
+        player.velocity = new Vector2(directionX * peso, player.velocity.y);
 
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            player.velocity = new Vector2(player.velocity.x, salto);
+            if (puedeSaltarNuevamente)
+            {
+                player.velocity = new Vector2(player.velocity.x, salto);
+                puedeSaltarNuevamente = false;
+            }
         }
     }
 
@@ -46,6 +52,14 @@ public class Movement : MonoBehaviour
             {
                 spritePlayer.flipX = true;
             }
+        }
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Suelo"))
+        {
+            puedeSaltarNuevamente = true;
         }
     }
 }
