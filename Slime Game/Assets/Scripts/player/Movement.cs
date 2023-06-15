@@ -52,6 +52,11 @@ public class Movement : MonoBehaviour
             }
         }
 
+        if (Input.GetKeyUp(KeyCode.Space) && player.velocity.y > 0f)
+        {
+            player.velocity = new Vector2(player.velocity.x, player.velocity.y * 0.5f);
+        }
+
         if (Input.GetKeyDown(KeyCode.LeftShift) && puedeHacerDash)
         {
             StartCoroutine(Dash());
